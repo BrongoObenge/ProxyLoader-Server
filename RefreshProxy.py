@@ -3,8 +3,7 @@ import urllib
 import time
 import os
 class RefreshProxy:
-    proxyList = ["91.205.49.127:8080",
-                 "46.165.249.92:80",
+    proxyList = ["46.165.249.92:80",
                  "5.196.116.22:7808",
                  "199.200.120.140:7808",
                  "199.200.120.37:7808",
