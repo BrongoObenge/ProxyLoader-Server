@@ -2,16 +2,16 @@ __author__ = 'j'
 import urllib
 import time
 import os
-class RefreshProxy:
-    proxyList = [
-                 "62.153.96.164:80",
-                 "83.128.239.152:80",
-                 "94.210.6.125:80",
-                 "185.30.147.197:8080",
-                 "5.53.16.183:8080",
+import urllib2, socket
 
+class RefreshProxy:
+    proxyList = ["5.53.16.183:8080",
+                "197.231.248.93:80",
+                "197.231.248.92:80",
+                "190.14.52.12:80",
 
                  ]
+    socket.setdefaulttimeout(30)
 
     def start(self):
         workingList = self.checkWorkingProxy(self.proxyList)
@@ -19,7 +19,12 @@ class RefreshProxy:
         x = 0
         while True:
             print "Starting Proxy: "+ exportString % workingList[x]
-            os.system(exportString % workingList[x])
+            print "echo \""+exportString % workingList[x]+"\" >> /home/ubuntu-0868049/.bashrc"
+            print "Trying to be root"
+            os.system("sudo -i")
+            os.system("echo "+exportString % workingList[x]+">> /home/ubuntu-0868049/.bashrc")
+            os.system("exit")
+            os.system("source /home/ubuntu-0868049/.bashrc")
             if x+1 == len(workingList):
                 x = 0
             else:
@@ -29,20 +34,32 @@ class RefreshProxy:
 
     def checkWorkingProxy(self, proxyList):
         workingProxy = []
-        a = 0
-        for x in range(len(proxyList)):
-            proxy = str(proxyList[x])
-            try:
-                urllib.urlopen("http://tweakers.net/pricewatch/323351/crucial-ballistix-tactical-blt2c4g3d1608et3lx0ceu/specificaties/", proxies={'http': "http://"+proxy})
-            except IOError:
-                print "Proxy not working: " + proxy
-                a +=1
-            except:
-                print "Error"
+        for item in proxyList:
+            if is_bad_proxy(item):
+                print "Bad Proxy", item
             else:
-                workingProxy.append(str(proxyList[x]))
+                print "Added proxy"
+                workingProxy.append(item)
         print "Done loading proxies."
         return workingProxy
 
     def __init__(self):
         pass
+
+def is_bad_proxy(pip):
+    try:
+        proxy_handler = urllib2.ProxyHandler({'http': pip})
+        opener = urllib2.build_opener(proxy_handler)
+        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+        urllib2.install_opener(opener)
+        req=urllib2.Request('http://www.google.com')  # change the url address here
+        sock=urllib2.urlopen(req)
+    except urllib2.HTTPError, e:
+        print 'Error code: ', e.code
+        return e.code
+    except Exception, detail:
+
+        print "ERROR:", detail
+        return 1
+    return 0
+
