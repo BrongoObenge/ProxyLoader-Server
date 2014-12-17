@@ -19,12 +19,9 @@ class RefreshProxy:
         x = 0
         while True:
             print "Starting Proxy: "+ exportString % workingList[x]
-            print "echo \""+exportString % workingList[x]+"\" >> /home/ubuntu-0868049/.bashrc"
-            print "Trying to be root"
-            os.system("sudo -i")
-            os.system("echo "+exportString % workingList[x]+">> /home/ubuntu-0868049/.bashrc")
-            os.system("exit")
-            os.system("source /home/ubuntu-0868049/.bashrc")
+            #print "echo \""+exportString % workingList[x]+"\" >> /home/ubuntu-0868049/.bash_profile"
+            os.system("echo "+exportString % workingList[x]+">> /home/ubuntu-0868049/.bash_profile")
+            os.system("source /home/ubuntu-0868049/.bash_profile")
             if x+1 == len(workingList):
                 x = 0
             else:
