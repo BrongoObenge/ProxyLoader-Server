@@ -20,6 +20,7 @@ class RefreshProxy:
                 x = 0
             else:
                 x+=1
+            print "Loaded new proxy, sleeping 30 minutes."
             time.sleep(1800)
 
     def checkWorkingProxy(self, proxyList):
@@ -28,14 +29,14 @@ class RefreshProxy:
         for x in range(len(proxyList)):
             proxy = str(proxyList[x])
             try:
-                print x
                 urllib.urlopen("http://google.com", proxies={'http': "http://"+proxy})
-                print "Done"
+
             except IOError:
                 print a,"/",len(proxyList)," Proxy not working"
                 a +=1
             else:
                 workingProxy.append(str(proxyList[x]))
+        print "Done loading proxies."
         return workingProxy
 
     def __init__(self):
