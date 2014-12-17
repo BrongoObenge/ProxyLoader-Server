@@ -19,15 +19,16 @@ class RefreshProxy:
         x = 0
         while True:
             print "Starting Proxy: "+ exportString % workingList[x]
-            #print "echo \""+exportString % workingList[x]+"\" >> /home/ubuntu-0868049/.bash_profile"
-            os.system("echo "+exportString % workingList[x]+">> /home/ubuntu-0868049/.bash_profile")
-            os.system("source /home/ubuntu-0868049/.bash_profile")
+                #print "echo \""+exportString % workingList[x]+"\" >> /home/ubuntu-0868049/.bash_profile"
+            #Add something that deletes previous http_export
+            os.system("echo "+exportString % workingList[x]+">> /etc/profile")
+                #os.system("source /home/ubuntu-0868049/.bash_profile")
             if x+1 == len(workingList):
                 x = 0
             else:
                 x+=1
             print "Loaded new proxy, sleeping 30 minutes."
-            #time.sleep(1800)
+            time.sleep(1800)
 
     def checkWorkingProxy(self, proxyList):
         workingProxy = []
@@ -49,7 +50,7 @@ def is_bad_proxy(pip):
         opener = urllib2.build_opener(proxy_handler)
         opener.addheaders = [('User-agent', 'Mozilla/5.0')]
         urllib2.install_opener(opener)
-        req=urllib2.Request('http://www.google.com')  # change the url address here
+        req=urllib2.Request('http://tweakers.net/pricewatch/352536/kingston-kta-mb1600s-4g/specificaties/')  # change the url address here
         sock=urllib2.urlopen(req)
     except urllib2.HTTPError, e:
         print 'Error code: ', e.code
